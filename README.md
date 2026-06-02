@@ -13,7 +13,6 @@ By evaluating both models on the **Saraga Dataset** (which features Hindustani a
 
 ## 2. Outcomes of the project
 * **Embedding Topology Analysis:** Observed how general-purpose vs. culturally-adapted self-supervised models cluster traditional microtonal music without task-specific training.
-* **Linear Probing Intelligence:** Quantified the "out-of-the-box" downstream usability of frozen acoustic features for raga classification.
 * **Fine-Tuning Adaptability:** Measured how performance scales when backbones are unfrozen and exposed to supervised optimization loops.
 * **Hyperparameter Sensitivity:** Discovered how pooling strategies (Mean vs. Max pooling) preserve dense structural audio characteristics.
 
