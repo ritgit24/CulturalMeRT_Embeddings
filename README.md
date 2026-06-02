@@ -69,8 +69,8 @@ I tried to refer to the following research papers to develop foundations in MeRT
 
 ---
 
-### Connecting BERT to MERT (Core Analogy)
-To solve the task of musical feature understanding, I mapped the text-processing mechanics of **BERT** directly onto the audio processing pipeline of **MERT**:
+### Connecting BERT to MERT 
+To approach and understand the task of musical feature understanding, I mapped the text-processing mechanics of **BERT** directly onto the audio processing pipeline of **MERT**:
 
 
 | Concept | BERT (Text) | MERT (Audio) |
