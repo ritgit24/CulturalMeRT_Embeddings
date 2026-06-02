@@ -64,7 +64,7 @@ python main.py
 ### Theoretical Foundation
 I tried to refer to the following research papers to develop foundations in MeRT:
 * **MERT:** *MERT: Acoustic Music Understanding Model with Large-Scale Self-Supervised Training* ([Li et al., 2023](https://arxiv.org)) - Provided the foundational multi-teacher MLM framework combining acoustic and musical intelligence.
-* **CultureMERT:** *CultureMERT: Cross-Cultural Music Understanding with Large-Scale Self-Supervised Training* ([ISMIR 2025](https://ismir.net)) -Established the two-stage continual pre-training strategy required to handle non-Western microtonal musical structures.
+* **CultureMERT:** *CultureMERT: Cross-Cultural Music Understanding with Large-Scale Self-Supervised Training* ([ISMIR 2025](https://ismir.net)) - Provided the establishment of the two-stage continual pre-training strategy required to handle non-Western microtonal musical structures.
 * **HuBERT:** *HuBERT: Self-Supervised Speech Representation Learning by Masked Prediction of Hidden Units* ([Hsu et al., 2021](https://arxiv.org)) - Provided the structural blueprint for frame-level audio quantization.
 
 ---
