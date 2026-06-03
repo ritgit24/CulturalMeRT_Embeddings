@@ -2,7 +2,7 @@ import torch
 from transformers import Wav2Vec2FeatureExtractor, AutoModel
 import numpy as np
 from torch.utils.data import DataLoader
-from dataset import SaragaRagaDataset
+from src.dataset import SaragaRagaDataset
 
 def extract_features(model_name, dataloader, device, pooling_strategy="mean"):
     model = AutoModel.from_pretrained(model_name, trust_remote_code=True).to(device)

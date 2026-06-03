@@ -13,6 +13,7 @@ By evaluating both models on the **Saraga Dataset** (which features Hindustani a
 
 ## 2. Outcomes of the project
 * **Embedding Topology Analysis:** Observed how general-purpose vs. culturally-adapted self-supervised models cluster traditional microtonal music without task-specific training.
+* **Linear Probing Intelligence:** Quantified the "out-of-the-box" downstream usability of frozen acoustic features for raga classification.
 * **Fine-Tuning Adaptability:** Measured how performance scales when backbones are unfrozen and exposed to supervised optimization loops.
 * **Hyperparameter Sensitivity:** Discovered how pooling strategies (Mean vs. Max pooling) preserve dense structural audio characteristics.
 
@@ -64,13 +65,13 @@ python main.py
 ### Theoretical Foundation
 I tried to refer to the following research papers to develop foundations in MeRT:
 * **MERT:** *MERT: Acoustic Music Understanding Model with Large-Scale Self-Supervised Training* ([Li et al., 2023](https://arxiv.org)) - Provided the foundational multi-teacher MLM framework combining acoustic and musical intelligence.
-* **CultureMERT:** *CultureMERT: Cross-Cultural Music Understanding with Large-Scale Self-Supervised Training* ([ISMIR 2025](https://ismir.net)) - Provided the establishment of the two-stage continual pre-training strategy required to handle non-Western microtonal musical structures.
+* **CultureMERT:** *CultureMERT: Cross-Cultural Music Understanding with Large-Scale Self-Supervised Training* ([ISMIR 2025](https://ismir.net)) -Established the two-stage continual pre-training strategy required to handle non-Western microtonal musical structures.
 * **HuBERT:** *HuBERT: Self-Supervised Speech Representation Learning by Masked Prediction of Hidden Units* ([Hsu et al., 2021](https://arxiv.org)) - Provided the structural blueprint for frame-level audio quantization.
 
 ---
 
-### Connecting BERT to MERT 
-To approach and understand the task of musical feature understanding, I mapped the text-processing mechanics of **BERT** directly onto the audio processing pipeline of **MERT**:
+### Connecting BERT to MERT (Core Analogy)
+To solve the task of musical feature understanding, I mapped the text-processing mechanics of **BERT** directly onto the audio processing pipeline of **MERT**:
 
 
 | Concept | BERT (Text) | MERT (Audio) |
@@ -78,3 +79,19 @@ To approach and understand the task of musical feature understanding, I mapped t
 | **Input Unit** | Text Words / Tokens | Raw Audio Frames (processed via CNN front-end) |
 | **Core Architecture** | Transformer Encoder Only | Transformer Encoder Only |
 | **Training Task** | **Masked Language Modeling (MLM):** Hides random words and predicts them using left-and-right text context. | **Masked Audio Modeling:** Hides random segments of audio frames and reconstructs them using surrounding musical context. |
+
+## Results
+
+### MERT Behavior : 
+When fine-tuned on this data split, standard MERT completely isolates and nails Class 0 perfectly with a score of 1.00 across all metrics. This proves that backpropagation successfully forced MERT's general purpose attention heads to lock onto the specific acoustic textures of Class 0.
+
+### CultureMERT Behavior :
+Fine-tuned CultureMERT yields a wider distribution of individual precision scores. Because its layers are pre-conditioned to hunt for subtle microtonal Indian classical variations, it resists over indexing on just one simple acoustic texture over a short 3 epoch training window.
+
+The Takeaway on Fine-Tuning vs. ProbingFor general music backbones like MERT, supervised fine-tuning is absolutely mandatory to twist its Western weights toward non-Western audio datasets. For CultureMERT, its frozen embeddings from the earlier mean pooling probe are already highly specialized out of the box.
+
+### Constraint : 
+
+I faced major hardware limitations while doing the task. The original Saraga tracks are full length concert recordings that require over 14 gigabytes of disk storage. Loading these massive audio tracks all at once caused the system RAM to overload and crash the program even after multiple attempts. To bypass this, the pipeline was rewritten to stream files directly from disk and chunk only the first 10 seconds of audio. This approach kept the RAM footprint safe but restricted the test split to a sparse 3 track subset.
+
+The data folder with the ausio tracks has been added to .gitignore due to its enormous size.

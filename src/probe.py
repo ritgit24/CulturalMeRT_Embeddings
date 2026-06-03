@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
 def evaluate_linear_probe(embeddings, labels):
-    X_train, X_test, y_train, y_test = train_test_split(embeddings, labels, test_size=0.2, random_state=42, stratify=labels)
+    X_train, X_test, y_train, y_test = train_test_split(embeddings, labels, test_size=0.2, random_state=42)
     
     clf = LogisticRegression(max_iter=1000, C=1.0)
     clf.fit(X_train, y_train)

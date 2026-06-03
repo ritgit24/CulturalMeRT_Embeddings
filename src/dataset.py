@@ -1,7 +1,8 @@
 import torch
-import torchaudio
 from torch.utils.data import Dataset
 import pandas as pd
+import soundfile as sf
+import scipy.signal
 
 class SaragaRagaDataset(Dataset):
     def __init__(self, metadata_csv, sample_rate=24000, clip_duration=5):
@@ -14,15 +15,24 @@ class SaragaRagaDataset(Dataset):
         
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
-        waveform, sr = torchaudio.load(row['audio_path'])
         
+        info = sf.info(row['audio_path'])
+        native_sr = info.samplerate
+        
+        # Calculate exactly how many frames to read from disk (read 10 seconds to be safe)
+        frames_to_read = int(native_sr * 10)
+        
+        data, sr = sf.read(row['audio_path'], frames=frames_to_read)
+        
+        if len(data.shape) > 1:
+            data = data.mean(axis=1)
+            
         if sr != self.sample_rate:
-            resampler = torchaudio.transforms.Resample(sr, self.sample_rate)
-            waveform = resampler(waveform)
+            num_samples = int(len(data) * self.sample_rate / sr)
+            data = scipy.signal.resample(data, num_samples)
             
-        if waveform.shape[0] > 1:
-            waveform = torch.mean(waveform, dim=0, keepdim=True)
-            
+        waveform = torch.tensor(data, dtype=torch.float32).unsqueeze(0)
+        
         if waveform.shape[1] >= self.clip_len:
             waveform = waveform[:, :self.clip_len]
         else:

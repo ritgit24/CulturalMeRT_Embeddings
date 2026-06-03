@@ -9,3 +9,4 @@ seaborn
 umap-learn
 tqdm
 mirdata
+torchcodec
